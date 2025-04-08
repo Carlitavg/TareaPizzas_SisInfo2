@@ -1,0 +1,29 @@
+{
+	"name": "DIM_ORDERS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sql_dw_pizzas_sales",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ORDER_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHA",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_ORDERS"
+		}
+	}
+}
