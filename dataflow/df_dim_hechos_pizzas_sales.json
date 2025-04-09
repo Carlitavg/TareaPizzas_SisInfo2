@@ -1,0 +1,66 @@
+{
+	"name": "df_dim_hechos_pizzas_sales",
+	"properties": {
+		"folder": {
+			"name": "DF"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "order_details_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DIM_HECHOS_PIZZAS_SALES",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "sort1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          order_details_id as integer,",
+				"          order_id as integer,",
+				"          pizza_id as string,",
+				"          quantity as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 sort(asc(order_details_id, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ORDER_DETAILS_ID as integer,",
+				"          CANTIDAD as integer,",
+				"          ORDER_ID as integer,",
+				"          PIZZA_TYPE_ID as string,",
+				"          PIZZA_ID as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ORDER_DETAILS_ID = order_details_id",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
